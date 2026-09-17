@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titolo della poesia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <a href="Diario_di_notte.html">← Torna alla Raccolta Uno</a>
+    
+    <h2>Titolo della prima poesia</h2>
+    
+    <!-- La classe poesia-content assicura che gli a capo vengano rispettati -->
+    <div class="poesia-content">
+Qui scrivi la tua prima riga,
+qui la seconda.
+    
+Puoi lasciare uno spazio vuoto,
+e continuare con la strofa successiva.
+    </div>
+
+</body>
+</html>
