@@ -10,16 +10,15 @@
 
     <a href="index.html">← Torna alla Home</a>
     
-    <h2>Titolo della prima poesia</h2>
-    
-    <!-- La classe poesia-content assicura che gli a capo vengano rispettati -->
-    <div class="poesia-content">
-Qui scrivi la tua prima riga,
-qui la seconda.
-    
-Puoi lasciare uno spazio vuoto,
-e continuare con la strofa successiva.
-    </div>
+    <h1>Diario_di_notte</h1>
+    <p class="intro">Breve introduzione a questa specifica raccolta (opzionale).</p>
+
+    <h2>Indice delle poesie</h2>
+    <ul>
+        <li><a href="poesia-1.html">1. Titolo della prima poesia</a></li>
+        <li><a href="#">2. Titolo della seconda poesia</a></li>
+        <li><a href="#">3. Titolo della terza poesia</a></li>
+    </ul>
 
 </body>
 </html>
