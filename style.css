@@ -1,0 +1,49 @@
+/* style.css */
+body {
+    /* Bianco avorio molto chiaro, non saturo */
+    background-color: #FDFCF8; 
+    color: #1a1a1a; /* Nero morbido, non assoluto, per un contrasto elegante */
+    font-family: 'Georgia', 'Garamond', serif; /* Font classici da libro */
+    max-width: 700px; /* Mantiene le righe non troppo lunghe, ideale per la poesia */
+    margin: 0 auto;
+    padding: 60px 20px;
+    line-height: 1.8;
+}
+
+h1, h2, h3 {
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+a {
+    color: #1a1a1a;
+    text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #666;
+    border-bottom: 1px solid #666;
+}
+
+.intro {
+    font-style: italic;
+    margin-bottom: 50px;
+    color: #444;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 15px;
+}
+
+.poesia-content {
+    white-space: pre-wrap; /* Mantiene gli "a capo" esatti che scrivi nell'HTML */
+    font-size: 1.1em;
+    margin-top: 30px;
+}
