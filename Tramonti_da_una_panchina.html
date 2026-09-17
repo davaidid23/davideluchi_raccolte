@@ -3,22 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tramonti_da_una_panchina.html</title>
+    <title>Tramonti da una panchina — Davide Luchi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <a href="index.html">← Torna alla Home</a>
-    
-    <h1>Tramonti_da_una_panchina.html</h1>
-    <p class="intro">Breve introduzione a questa specifica raccolta (opzionale).</p>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label" aria-label="Apri il menu"><span></span></label>
 
-    <h2>Indice delle poesie</h2>
-    <ul>
-        <li><a href="poesia-1.html">1. Titolo della prima poesia</a></li>
-        <li><a href="#">2. Titolo della seconda poesia</a></li>
-        <li><a href="#">3. Titolo della terza poesia</a></li>
-    </ul>
+    <nav class="sidebar">
+        <div>
+            <a href="index.html" class="sidebar-brand">Davide Luchi</a>
+            <ul class="sidebar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li class="sidebar-section-label">Raccolte</li>
+                <li><a href="Autopsie.html">Autopsie</a></li>
+                <li><a href="Diario_di_notte.html">Diario di notte</a></li>
+                <li><a href="Tramonti_da_una_panchina.html" class="active">Tramonti da una panchina</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-bottom">
+            <span>© 2026</span>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="content-inner">
+
+            <a href="index.html" class="back-link">← Torna alla home</a>
+
+            <h1 class="page-title">Tramonti da una panchina</h1>
+            <p class="intro">Breve introduzione a questa specifica raccolta (opzionale).</p>
+
+            <ul class="poem-index">
+                <li><a href="poesia-1.html">Titolo della prima poesia</a></li>
+                <li><a href="#">Titolo della seconda poesia</a></li>
+                <li><a href="#">Titolo della terza poesia</a></li>
+            </ul>
+
+        </div>
+    </main>
 
 </body>
 </html>

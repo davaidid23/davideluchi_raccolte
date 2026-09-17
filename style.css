@@ -1,49 +1,318 @@
-/* style.css */
+/* style.css — Davide Luchi, raccolte di poesie */
+
+:root {
+  --bg: #FBF9F5;
+  --ink: #1C1A19;
+  --muted: #6E6259;
+  --rule: #E4DDD1;
+
+  --sidebar-bg: #15100E;
+  --sidebar-text: #E9E2D8;
+  --sidebar-muted: #9C8E80;
+
+  --accent: #B99A5B;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --sidebar-width: 260px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    /* Bianco avorio molto chiaro, non saturo */
-    background-color: #FDFCF8; 
-    color: #1a1a1a; /* Nero morbido, non assoluto, per un contrasto elegante */
-    font-family: 'Georgia', 'Garamond', serif; /* Font classici da libro */
-    max-width: 700px; /* Mantiene le righe non troppo lunghe, ideale per la poesia */
-    margin: 0 auto;
-    padding: 60px 20px;
-    line-height: 1.8;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 {
-    font-weight: normal;
-    letter-spacing: 1px;
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 32px;
+  z-index: 20;
+  transition: transform 0.35s ease;
 }
 
-a {
-    color: #1a1a1a;
-    text-decoration: none;
-    border-bottom: 1px solid #ccc;
-    transition: all 0.3s ease;
+.sidebar-brand {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  border-bottom: none;
+  letter-spacing: 0.3px;
 }
 
-a:hover {
-    color: #666;
-    border-bottom: 1px solid #666;
+.sidebar-nav {
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 10px 0;
+  color: var(--sidebar-muted);
+  text-decoration: none;
+  border-bottom: none;
+  font-size: 0.98rem;
+  transition: color 0.2s ease;
+}
+
+.sidebar-nav a:hover {
+  color: var(--sidebar-text);
+}
+
+.sidebar-nav a.active {
+  color: var(--accent);
+}
+
+.sidebar-section-label {
+  margin-top: 28px;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  color: var(--sidebar-muted);
+  opacity: 0.75;
+}
+
+.sidebar-bottom {
+  font-size: 0.8rem;
+  color: var(--sidebar-muted);
+  opacity: 0.6;
+}
+
+/* ---------- Mobile nav toggle ---------- */
+
+.nav-toggle-checkbox {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--sidebar-bg);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-toggle-label span,
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--sidebar-text);
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.nav-toggle-label span::before {
+  position: absolute;
+  top: -6px;
+}
+
+.nav-toggle-label span::after {
+  position: absolute;
+  top: 6px;
+}
+
+/* ---------- Content ---------- */
+
+.content {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  padding: 88px 64px 80px;
+}
+
+.content-inner {
+  max-width: 640px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height: 1.1;
+  margin: 0 0 24px;
+}
+
+.lede {
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: var(--muted);
+  margin: 0;
+  max-width: 56ch;
+}
+
+.collections {
+  margin-top: 72px;
+}
+
+.collections h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin: 0 0 28px;
+}
+
+.collection-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.collection-list li {
+  border-top: 1px solid var(--rule);
+}
+
+.collection-list li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.collection-list a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 22px 0;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: none;
+}
+
+.collection-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: italic;
+  transition: color 0.2s ease;
+}
+
+.collection-list a:hover .collection-title {
+  color: var(--accent);
+}
+
+.collection-desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* ---------- Collection / poem pages ---------- */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 40px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+
+.back-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--muted);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  margin: 0 0 16px;
 }
 
 .intro {
-    font-style: italic;
-    margin-bottom: 50px;
-    color: #444;
+  font-family: var(--font-sans);
+  font-style: normal;
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 48px;
+  max-width: 56ch;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.poem-index {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-li {
-    margin-bottom: 15px;
+.poem-index li {
+  border-top: 1px solid var(--rule);
+}
+
+.poem-index li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.poem-index a {
+  display: block;
+  padding: 18px 0;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: none;
+  font-size: 1.05rem;
+}
+
+.poem-index a:hover {
+  color: var(--accent);
 }
 
 .poesia-content {
-    white-space: pre-wrap; /* Mantiene gli "a capo" esatti che scrivi nell'HTML */
-    font-size: 1.1em;
-    margin-top: 30px;
+  white-space: pre-wrap;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.9;
+  margin-top: 30px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 860px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 240px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.3);
+  }
+
+  .nav-toggle-checkbox:checked ~ .sidebar {
+    transform: translateX(0);
+  }
+
+  .nav-toggle-label {
+    display: flex;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 96px 24px 64px;
+  }
 }
