@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titolo della poesia</title>
+    <title>Diario_di_notte</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <a href="Diario_di_notte.html">← Torna alla Raccolta Uno</a>
+    <a href="index.html">← Torna alla Home</a>
     
     <h2>Titolo della prima poesia</h2>
     
