@@ -1,0 +1,34 @@
+name: Build Poems HTML & Update Site
+
+on:
+  push:
+    branches:
+      - main  # O 'master', in base al ramo principale del tuo repository
+    paths:
+      - '**/*.tex'
+      - 'build_poems.py'
+      - '*.html'
+
+jobs:
+  build-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v4
+
+      - name: Configurazione Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Esecuzione dello script di Build
+        run: python build_poems.py
+
+      - name: Commit e Push delle modifiche HTML
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "auto: rigenerate pagine HTML delle poesie da file .tex"
+          file_pattern: "*.html"
