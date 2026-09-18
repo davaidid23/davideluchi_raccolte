@@ -286,12 +286,55 @@ body {
   color: var(--accent);
 }
 
+.epigraph {
+  text-align: right;
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--muted);
+  margin: 32px 0 48px;
+}
+
+.epigraph p {
+  margin: 0 0 6px;
+}
+
+.coda {
+  text-align: right;
+  font-family: var(--font-display);
+  color: var(--muted);
+  margin: 40px 0 0;
+}
+
+.coda p {
+  margin: 0 0 6px;
+}
+
 .poesia-content {
-  white-space: pre-wrap;
   font-family: var(--font-display);
   font-size: 1.15rem;
   line-height: 1.9;
   margin-top: 30px;
+}
+
+.poesia-content p {
+  margin: 0 0 28px;
+}
+
+.line-split {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 24px;
+}
+
+.stretch-line {
+  text-align: justify;
+  text-align-last: justify;
+  -webkit-text-align-last: justify;
+}
+
+.line-right {
+  text-align: right;
 }
 
 /* ---------- Responsive ---------- */
