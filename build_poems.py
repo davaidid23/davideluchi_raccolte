@@ -1,54 +1,7 @@
 #!/usr/bin/env python3
 """
-build_poems.py — genera le pagine HTML delle poesie a partire dai file .tex
-e ricostruisce l'indice di ciascuna raccolta.
-
-USO:
-    python3 build_poems.py
-
-Struttura attesa, nella cartella da cui viene lanciato (la root del repo):
-
-    Autopsie/
-        01_qualcosa.tex
-    Diario_di_notte/
-        ...tex
-    Tramonti_da_una_panchina/
-        ...tex
-    Autopsie.html
-    Diario_di_notte.html
-    Tramonti_da_una_panchina.html
-    style.css
-
-Per ogni raccolta genera una pagina poesia-<slug>.html per ogni .tex trovato,
-e aggiorna il blocco <!-- POEM-INDEX-START --> ... <!-- POEM-INDEX-END -->
-nella pagina della raccolta corrispondente.
-
-COSA RICONOSCE NEI .tex
-------------------------
-- \\addtoindex{Titolo}  oppure  \\poemtitle{Titolo}   -> titolo della poesia
-- \\begin{verse} ... \\end{verse}                     -> un blocco di versi.
-  Più blocchi consecutivi, separati solo da \\vspace{...} (senza riga vuota),
-  vengono uniti nella stessa strofa: si assume che l'autore li abbia spezzati
-  solo per stringere lo spaziato tipografico, non per iniziare una strofa
-  nuova. Una riga vuota VERA (dentro un blocco) genera invece una nuova strofa.
-- \\\\   (o  \\\\!)                                    -> a capo dentro una strofa.
-  "\\!" (spazio negativo) dopo un a capo viene trattato come parte del
-  comando di a capo stesso, non come testo.
-- Un blocco che INIZIA con \\hfill (da solo, tutto il blocco) viene trattato
-  come "a parte": se è tra i primi blocchi della poesia è un'epigrafe
-  (prima del titolo), se è tra gli ultimi è una chiusa (dopo il corpo).
-  Se il testo dentro è avvolto in \\textit{...}, resta in corsivo;
-  altrimenti resta testo normale, per rispettare quello che hai scritto tu.
-- \\hfill IN MEZZO a una riga (non a inizio blocco) -> riga divisa in due
-  metà, una a sinistra e una a destra, sulla stessa riga (come in "Autopsia").
-- \\textit{...}, \\textbf{...}, \\emph{...}           -> <em>, <strong>
-- -- / ---                                            -> – / —
-- `` / ''                                             -> “ / ”
-- apostrofi tra lettere                               -> apostrofo tipografico ’
-
-Se un file .tex usa costrutti che questo script non conosce ancora, avvisa
-in console invece di indovinare: meglio controllare a mano che rischiare
-di alterare una poesia senza che tu te ne accorga.
+build_poems.py — Genera le pagine HTML delle poesie dai file .tex
+e aggiorna gli indici delle raccolte.
 """
 
 import re
@@ -58,9 +11,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 
 COLLECTIONS = {
-    "Autopsie": "Autopsie.html",
-    "Diario_di_notte": "Diario_di_notte.html",
-    "Tramonti_da_una_panchina": "Tramonti_da_una_panchina.html",
+    "Autopsie": {"page": "Autopsie.html", "name": "Autopsie"},
+    "Diario_di_notte": {"page": "Diario_di_notte.html", "name": "Diario di notte"},
+    "Tramonti_da_una_panchina": {"page": "Tramonti_da_una_panchina.html", "name": "Tramonti da una panchina"},
 }
 
 POEM_INDEX_START = "<!-- POEM-INDEX-START -->"
@@ -70,55 +23,51 @@ TITLE_RE = re.compile(r"\\(?:addtoindex|poemtitle)\{(.*?)\}", re.DOTALL)
 VERSE_RE = re.compile(r"\\begin\{verse\}(.*?)\\end\{verse\}", re.DOTALL)
 MAKEBOX_RE = re.compile(r"(?:\\noindent\s*)?\\makebox\[[^\]]*\]\[s\]\{(.*?)\}", re.DOTALL)
 NEWPAGE_RE = re.compile(r"\\newpage")
-# a capo: \\ seguito facoltativamente da un comando di spazio negativo (!,`,')
 LINEBREAK_RE = re.compile(r"\\\\[!,'`]?")
 SUSPICIOUS_LINE = re.compile(r"^[^\w]{1,2}$")
 
 
 def strip_latex_comments(tex: str) -> str:
-    """Rimuove tutto ciò che segue un % non preceduto da backslash, riga per riga."""
+    """Rimuove i commenti LaTeX (%) che non sono preceduti da backslash."""
     out_lines = []
     for line in tex.split("\n"):
         out_lines.append(re.sub(r"(?<!\\)%.*", "", line))
     return "\n".join(out_lines)
 
 
-# ---------- utilità di testo ----------
-
 def tex_inline_to_html(text: str) -> str:
+    """Converte i comandi inline LaTeX in equivalenti HTML."""
     text = re.sub(r"\\textit\{(.*?)\}", r"<em>\1</em>", text, flags=re.DOTALL)
     text = re.sub(r"\\textbf\{(.*?)\}", r"<strong>\1</strong>", text, flags=re.DOTALL)
     text = re.sub(r"\\emph\{(.*?)\}", r"<em>\1</em>", text, flags=re.DOTALL)
-    # \hspace{1.52cm} -> rientro equivalente (le unità cm/mm/pt/em funzionano anche in CSS)
     text = re.sub(
         r"\\hspace\{(-?[\d.]+(?:cm|mm|in|pt|em|ex))\}",
         r'<span style="display:inline-block;width:\1;"></span>',
         text,
     )
-    text = text.replace("\\&", "&amp;")
-    text = text.replace("\\%", "%")
-    text = text.replace("\\_", "_")
-    text = text.replace("---", "—")
-    text = text.replace("--", "–")
+    text = text.replace("\\&", "&amp;").replace("\\%", "%").replace("\\_", "_")
+    text = text.replace("---", "—").replace("--", "–")
     text = text.replace("``", "“").replace("''", "”")
     text = re.sub(r"(\w)'(\w)", r"\1’\2", text)
-    text = re.sub(r"\\[,:;]", "", text)  # comandi di spaziatura residui
-    text = re.sub(r"\s+", " ", text)     # collassa newline/indentazione interni
+    text = re.sub(r"\\[,:;]", "", text)
+    text = re.sub(r"\s+", " ", text)
     return text.strip()
 
 
-def slugify(title: str) -> str:
-    title = title.lower().strip().replace("’", "'")
-    for a, b in {"à": "a", "á": "a", "è": "e", "é": "e", "ì": "i", "í": "i",
-                 "ò": "o", "ó": "o", "ù": "u", "ú": "u"}.items():
-        title = title.replace(a, b)
-    return re.sub(r"[^a-z0-9]+", "-", title).strip("-") or "poesia"
+def slugify(title: str, fallback_filename: str) -> str:
+    """Genera uno slug pulito per l'URL basato sul titolo o sul nome file."""
+    clean_title = title.lower().strip().replace("’", "'")
+    for a, b in {"à": "a", "á": "a", "è": "e", "é": "e", "ì": "i", "í": "i", "ò": "o", "ó": "o", "ù": "u", "ú": "u"}.items():
+        clean_title = clean_title.replace(a, b)
+    slug = re.sub(r"[^a-z0-9]+", "-", clean_title).strip("-")
+    
+    if not slug or slug == "senza-titolo":
+        # Usa il nome del file .tex come fallback per evitare duplicati
+        slug = re.sub(r"[^a-z0-9]+", "-", fallback_filename.lower()).strip("-")
+    return slug
 
-
-# ---------- parsing ----------
 
 def is_hfill_aside(block: str):
-    """Se l'INTERO blocco è un \\hfill (da solo), restituisce (testo, corsivo)."""
     stripped = block.strip()
     if not stripped.startswith("\\hfill"):
         return None
@@ -130,7 +79,6 @@ def is_hfill_aside(block: str):
 
 
 def split_body_line(raw_line: str):
-    """Riconosce \\makebox[...][s]{...} (riga distesa) e \\hfill a metà riga."""
     stripped = raw_line.strip()
     m = MAKEBOX_RE.fullmatch(stripped)
     if m:
@@ -148,7 +96,6 @@ def split_body_line(raw_line: str):
 
 
 def build_body_stanzas(body_blocks, warnings):
-    """Unisce i blocchi 'corpo' in strofe, rispettando solo le righe vuote vere."""
     stanzas = [[]]
     for block in body_blocks:
         whole_line_right = is_hfill_aside(block)
@@ -168,41 +115,38 @@ def build_body_stanzas(body_blocks, warnings):
                 line = split_body_line(raw_line)
                 text_to_check = line.get("html") or (line.get("left", "") + line.get("right", ""))
                 if SUSPICIOUS_LINE.match(text_to_check):
-                    warnings.append(
-                        f'riga sospetta: "{text_to_check}" — controlla il .tex, potrebbe essere un refuso'
-                    )
+                    warnings.append(f'Riga sospetta: "{text_to_check}"')
                     continue
                 stanzas[-1].append(line)
     return [s for s in stanzas if s]
 
 
-def parse_poem(tex: str):
+def parse_poem(tex: str, filename: str):
     tex = strip_latex_comments(tex)
+    warnings = []
 
-    newpage_warning = None
     if NEWPAGE_RE.search(tex):
         tex = NEWPAGE_RE.split(tex, maxsplit=1)[0]
-        newpage_warning = (
-            "trovato \\newpage dentro il file: sembra che ci siano due versioni "
-            "della stessa poesia nello stesso .tex. Ho usato solo la prima; "
-            "cancella dal .tex quella che non ti serve e rilancia lo script."
-        )
+        warnings.append("Trovato \\newpage: usata solo la prima parte del file.")
 
     title_match = TITLE_RE.search(tex)
-    title = tex_inline_to_html(title_match.group(1)) if title_match else "Senza titolo"
+    if title_match:
+        title = tex_inline_to_html(title_match.group(1))
+    else:
+        # Pulisce il nome del file per usarlo come titolo di fallback (es. "01_titolo.tex" -> "Titolo")
+        clean_name = re.sub(r"^\d+[-_]?", "", Path(filename).stem).replace("_", " ").title()
+        title = clean_name or "Senza titolo"
+        warnings.append(f"Nessun \\poemtitle trovato, titolo derivato dal file: '{title}'")
 
     blocks = VERSE_RE.findall(tex)
-
     asides = [is_hfill_aside(b) for b in blocks]
 
-    # epigrafe: blocchi hfill-only consecutivi dall'inizio
     start = 0
     epigraph = []
     while start < len(blocks) and asides[start] is not None:
         epigraph.append(asides[start])
         start += 1
 
-    # chiusa: blocchi hfill-only consecutivi dalla fine (senza sovrapporsi all'epigrafe)
     end = len(blocks)
     coda = []
     while end > start and asides[end - 1] is not None:
@@ -211,10 +155,6 @@ def parse_poem(tex: str):
     coda.reverse()
 
     body_blocks = blocks[start:end]
-
-    warnings = []
-    if newpage_warning:
-        warnings.append(newpage_warning)
     stanzas = build_body_stanzas(body_blocks, warnings)
 
     return {
@@ -226,8 +166,7 @@ def parse_poem(tex: str):
     }
 
 
-# ---------- rendering HTML ----------
-
+# Template HTML
 POEM_TEMPLATE = """<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -351,46 +290,57 @@ def update_collection_page(path: Path, poems):
         return
     html = path.read_text(encoding="utf-8")
     if POEM_INDEX_START not in html or POEM_INDEX_END not in html:
-        print(f"  ! {path.name} non ha i marcatori {POEM_INDEX_START} / {POEM_INDEX_END}.")
+        print(f"  ! {path.name} non contiene i marcatori {POEM_INDEX_START} / {POEM_INDEX_END}.")
         return
     pattern = re.compile(re.escape(POEM_INDEX_START) + r".*?" + re.escape(POEM_INDEX_END), re.DOTALL)
     replacement = f"{POEM_INDEX_START}\n                {build_index_block(poems)}\n                {POEM_INDEX_END}"
     path.write_text(pattern.sub(replacement, html), encoding="utf-8")
-    print(f"  ✓ indice aggiornato in {path.name}")
+    print(f"  ✓ Indice aggiornato in {path.name}")
 
 
 def main():
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT
+    used_slugs = set()
 
-    for folder_name, collection_page in COLLECTIONS.items():
+    for folder_name, meta in COLLECTIONS.items():
         tex_dir = root / folder_name
         if not tex_dir.is_dir():
             continue
 
-        print(f"\n{folder_name}/")
+        print(f"\n📁 Cartella: {folder_name}/")
         tex_files = sorted(tex_dir.glob("*.tex"))
         if not tex_files:
             print("  (nessun file .tex trovato)")
             continue
 
-        collection_name = collection_page.replace(".html", "").replace("_", " ")
+        collection_page = meta["page"]
+        collection_name = meta["name"]
         poems_for_index = []
 
         for tex_file in tex_files:
-            poem = parse_poem(tex_file.read_text(encoding="utf-8"))
-            slug = slugify(poem["title"])
+            poem = parse_poem(tex_file.read_text(encoding="utf-8"), tex_file.name)
+            base_slug = slugify(poem["title"], tex_file.stem)
+            
+            # Gestione duplicati di slug
+            slug = base_slug
+            counter = 1
+            while slug in used_slugs:
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            used_slugs.add(slug)
+
             out_name = f"poesia-{slug}.html"
 
             html = build_poem_page(poem, folder_name, collection_page, collection_name)
             (root / out_name).write_text(html, encoding="utf-8")
             poems_for_index.append((poem, out_name))
-            print(f"  ✓ {tex_file.name} -> {out_name}  (\"{poem['title']}\")")
+            print(f"  ✓ {tex_file.name} ➔ {out_name} (\"{poem['title']}\")")
             for w in poem["warnings"]:
-                print(f"      ⚠ {w}")
+                print(f"     ⚠ {w}")
 
         update_collection_page(root / collection_page, poems_for_index)
 
-    print("\nFatto.")
+    print("\n✅ Generazione completata con successo.")
 
 
 if __name__ == "__main__":
