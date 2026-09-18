@@ -1,0 +1,142 @@
+\addtoindex{Notte maledetta sei per me...}
+
+
+\begin{verse}
+    Notte maledetta sei per me\\
+    la relazione più tossica.\\!
+    Ti voglio ti bramo\\
+    e quando sei qui per me\\
+    non mi concedo.\\!
+
+Mi devo svuotare %
+\tikz[remember picture,baseline=(punto.base)]%
+  \node[inner sep=0pt,outer sep=0pt] (punto) {per};%
+\end{verse}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \pgfmathsetseed{1234}
+
+  % punto di partenza leggermente a destra
+  \coordinate (partenza) at ([xshift=-0.3pt, yshift=-0.8pt]punto.north east);
+
+  \begin{scope}[shift={(partenza)}]
+    % curva verso destra e in basso
+    \draw[thick, black, smooth, decorate,
+          decoration={random steps, segment length=4pt, amplitude=0.5pt}]
+      (0,0) .. controls (0.4,-0.1) and (1,-1) .. (0.7,-4); 
+  \end{scope}
+\end{tikzpicture}
+
+
+  % \begin{scope}[shift={(partenza)}]
+  %   \draw[thick, black!70, smooth, decorate,
+  %         decoration={random steps, segment length=4pt, amplitude=01pt}]
+  %     (0,0) -- (0.5,-2cm);
+
+
+
+
+  % Ora disegno la linea tremolante
+  % \begin{scope}[shift={(partenza)}]
+  %   \draw[thick, black!70]
+  %     plot[
+  %       domain=0:-8cm,
+  %       samples=50,
+  %       smooth
+  %     ]
+  %     ({0.1*(rand)}, {\x});
+  % \end{scope}
+% \tikz[remember picture,baseline=(punto.base)]%
+%   \node[inner sep=0pt,outer sep=0pt] (punto) {per};%
+% \end{verse}
+
+% % linea tremolante overlay
+% \begin{tikzpicture}[remember picture,overlay]
+%   \pgfmathsetseed{1234} % opzionale: rende il "caso" riproducibile
+
+%   % SHIFT: metto l'origine (0,0) esattamente in corrispondenza del punto di partenza
+%   \begin{scope}[shift={((punto.north east)+(2pt,0)}]
+%     % ora disegno la linea come plot verticale: x = piccolo rumore, y = valore di \x (dominio)
+%     \draw[thick, black!70]
+%       plot[
+%         domain=0:-8cm,   % scende di 8cm
+%         samples=50,
+%         smooth
+%       ]
+%       ({0.1*(rand)}, {\x}); % x = tremolio relativo, y = \x (dominio)
+%   \end{scope}
+% \end{tikzpicture}
+
+% \begin{verse}
+%     Notte maledetta sei per me\\
+%     la relazione più tossica.\\!
+%     Ti voglio ti bramo\\
+%     e quando sei qui per me\\
+%     non mi concedo.\\!
+
+% Mi devo svuotare per \tikz[remember picture,baseline=(punto.base)]%
+%   \node[inner sep=0pt,outer sep=0pt] (punto) {per};%
+% \end{verse}
+
+% % il tikzpicture overlay va dopo il testo (può essere messo anche a fine pagina)
+% \begin{tikzpicture}[remember picture,overlay]
+%   \draw[thick, black!70] plot[domain=0: -8, samples=40, smooth] 
+%     ({2 + 0.1 * (rand)}, {\x});
+%   % \draw[
+%   %   decorate,
+%   %   decoration={random steps,segment length=1pt, amplitude=1pt},
+%   %   thick, color=black!70
+%   % ] (punto.south) .. controls +(0,-3mm) and +(0,3mm) .. ++(0,-8cm);
+% \end{tikzpicture}
+
+% %     Mi devo svuotare per
+    
+% % \tikz[remember picture, baseline] \node (puntoPartenza) {svuotare};
+
+% % \begin{tikzpicture}[remember picture, overlay]
+% %   \draw[
+% %     decorate,
+% %     decoration={random steps, segment length=1pt, amplitude=1pt},
+% %     thick, color=black!70
+% %   ] (puntoPartenza.south) -- ++(0,-8cm);
+% % \end{tikzpicture}
+% % \begin{tikzpicture}
+% %   \pgfmathsetseed{1234} % per rendere il “caso” riproducibile
+
+% %   \draw[thick, black!70] plot[domain=0: -8, samples=40, smooth] 
+% %     ({2 + 0.1 * (rand)}, {\x}); % aggiunge rumore su x
+
+% %   % se vuoi rumore solo su y, puoi fare qualcosa come
+% %   % plot[domain=0:-8, samples=40, smooth] ({2}, {\x + 0.1 * rand})
+% % \end{tikzpicture}
+
+    
+%     % \begin{tikzpicture}[decoration={bent, amplitude=3pt, aspect=0.4}]
+%     %   \draw[decorate, thick] (0,0) -- (3,1) -- (1,2);
+%     % \end{tikzpicture}
+
+%     % \tikz[baseline] \node[draw=none, pencildraw/.style={
+%     %     black!75,
+%     %     decorate,
+%     %     decoration={random steps, segment length=0.8pt, amplitude=0.1pt}
+%     %   }
+    
+
+
+%     % \begin{tikzpicture}[pencildraw/.style={
+%     %     black!75,
+%     %     decorate,
+%     %     decoration={random steps, segment length=0.8pt, amplitude=0.1pt}
+%     %   }]
+%     %   \draw[pencildraw, thick] (0,0) -- (5,0) to[out=30, in=330] (7,1);
+%     % \end{tikzpicture}
+
+
+
+
+%     % \tikz[baseline]{
+%     %     \draw[decorate, decoration={random steps, segment length=3pt, amplitude=3pt}]
+%     %         (0,0) -- ++(0,-18cm);
+%     % }
+
+% \end{verse}

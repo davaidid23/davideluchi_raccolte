@@ -1,0 +1,284 @@
+\documentclass[12pt,a5paper]{book}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=2cm,bottom=2.5cm,left=2cm,right=2cm}
+\usepackage{ebgaramond}
+\usepackage{verse}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{decorations.fractals}
+\usetikzlibrary{decorations.pathmorphing}
+\pagestyle{fancy}
+\usepackage{setspace}
+\usepackage[hidelinks]{hyperref} % link senza colori fastidiosi
+
+
+\renewcommand{\poemtitle}[1]{}
+\renewcommand{\headrulewidth}{0pt}   % rimuove la linea in alto
+\newcommand{\addtoindex}[1]{
+\addcontentsline{toc}{section}{#1}
+\vspace*{2,5cm}
+}
+
+
+% \makeatletter
+% \renewcommand{\poemtitle}[1]{%
+%   % memorizza il primo verso (una sola riga)
+%   \begingroup
+%   \obeylines
+%   \let\\\relax
+%   \afterassignment\getfirstline
+%   \let\next=
+% }
+% \newcommand{\getfirstline}[1]{%
+%   \addcontentsline{toc}{section}{#1}%
+%   \endgroup
+% }
+% \makeatothers
+
+
+
+
+% \renewcommand{\poemtitle}[1]{%
+%   \vspace*{4em}% spazio prima
+%   {\poemtitlefont #1\par}%
+%   \addcontentsline{toc}{section}{#1}% aggiunge automaticamente al TOC
+%   \vspace*{6em}% spazio dopo
+% }
+
+\newcommand{\handlinefrom}[2][]{
+  % #1 = stile decorazione (opzionale)
+  % #2 = lunghezza verso il basso
+  after node path={
+    \tikzlastnode.south 
+      .. controls + (0,-0.5) and + (0, -0.5) ..
+      ++(0,-#2)
+  },
+  decorate,
+  decoration={random steps, segment length=0.8pt, amplitude=0.1pt, #1}
+}
+
+
+\renewcommand{\poemtitlefont}{\LARGE\centering}%\bfseries}
+%\setlength{\beforepoemtitleskip}{10em}   % spazio PRIMA del titolo
+%\setlength{\afterpoemtitleskip}{8em}    % spazio DOPO il titolo
+
+%\fancyhf{}
+\fancyfoot[C]{\thepage}
+
+\titleformat{\chapter}[display]
+  {\centering\normalfont\huge}%\bfseries}
+  {}{0pt}{}
+
+
+\begin{document}
+
+\input{copertina.tex}
+
+\thispagestyle{empty}
+
+% Pagina vuota
+\cleardoublepage
+\thispagestyle{empty}
+
+\input{prefazione.tex}
+
+% Pagina vuota dopo la prefazione
+\cleardoublepage
+\thispagestyle{empty}
+
+
+
+
+\clearpage
+\input{Cosa cerchi in queste parole?}
+%\thispagestyle{fancy}
+
+\clearpage
+\input{Ricordo di aver abbracciato un albero}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Da questo loculo traballante}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Oggi piove}
+\thispagestyle{fancy}
+
+% \clearpage
+% \input{Musica}
+% \thispagestyle{fancy}
+
+\clearpage
+\input{Il letto è vuoto}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Mi giro}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Notte maledetta sei per me}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Odiato ritorno, salvami}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Inquieto cane}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Oggi ho pianto}
+\thispagestyle{fancy}
+
+\clearpage
+\input{La poesia}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Non voglio che fossa}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Parassita avido di cadute}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Mani raggrinzite}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Elefante, saggio poeta}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Parli}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Oggi è tornato il sole}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Dormire avvinghiato}
+\thispagestyle{fancy}
+
+\clearpage
+\input{E sento lo stridere}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Io i ricordi li rivivo}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Soffro perchè da ragion di vita}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Ne ho bisogno}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Un leggero stato febbrile}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Non riuscirò a scalpellare}
+\thispagestyle{fancy}
+
+\clearpage
+\input{Svuotato}
+\thispagestyle{fancy}
+
+% Indice finale
+\cleardoublepage
+\tableofcontents
+
+\end{document}
+
+
+
+
+%ORDINE DEGLI ARGOMENTI:
+
+a) Profonda tristezza
+b) Amore finito male
+c) Solitudive
+d) Sentirsi fuori luogo
+e) Viaggio
+f) Speranza
+g) Dediche
+
+
+ORDINE DELLE POESIE PER ARGOMENTO:
+
+a) Profonda tristezza:
+    1. Ispirazione
+    2. Inchiostro
+    3. Vermi
+    4. Ombra
+    5. Autopsia
+    6. Destino
+    7. ...Dipende
+    8. Amarsi
+    9. Morte dell'anima
+    10. Albero della vita    
+    
+b) Amore finito male
+    1. Distanti...
+    2. Occhietti
+    3. Sabato sera
+    4. Addio
+    5. Io, tabacco
+    6. Campana di vetro
+    7. Sagoma
+    8. Palmo
+    9. Fatica
+    
+c) Solitudive
+    1. Tosse
+    2. Inveno alpino
+    3. La mia anima è
+    4. Clandestino
+    5. Magia
+    6. Sabbia
+    
+d) Sentirsi fuori luogo
+    1. Noia
+    2. Sordo
+    3. Fossa
+    4. Leggiadre emozioni
+    5. Nervi
+    6. Vuoto
+    
+e) Viaggio
+    1. Una notte accogliente
+    2. Vigilia
+    3. Pagine
+    
+f) Speranza
+    1. Che ne sarà
+    2. Naufraghi
+    3. Campo
+    4. Ritorno
+    5. Vivere
+    6. Sfida alla Luna
+    7. Perla    
+    
+g) Dediche
+    1. Falangi
+    2. Dettagli
+    3. Canuta
+    4. Sguardo
+    5. E quante cose ancora...
+    6. Zombie
+
+
